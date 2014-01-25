@@ -167,6 +167,10 @@ typedef enum {
 	NSViewController<DPSetupWindowStageViewController> *nextViewController = [[self viewControllers] objectAtIndex:nextStage];
 	NSView *view = [nextViewController view];
 	
+	if ([self funnelsRepresentedObjects]) {
+		[nextViewController setRepresentedObject:[previousViewController representedObject]];
+	}
+
 	if (direction == DPSetupWindowNextDirection) {
 		[nextViewController performSelectorIfExists:@selector(willProgressToStage)];
 	} else if (direction == DPSetupWindowBackDirection)	{
@@ -183,9 +187,6 @@ typedef enum {
 		}
 	};
 	
-	if ([self funnelsRepresentedObjects]) {
-		[nextViewController setRepresentedObject:[previousViewController representedObject]];
-	}
 	
 	if ([self animates] && previousViewController) {
 		[NSAnimationContext beginGrouping];
