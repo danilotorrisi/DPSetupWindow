@@ -198,7 +198,7 @@ typedef enum {
 			[[previousViewController view] removeFromSuperviewWithoutNeedingDisplay];
 			
 			// Set the window title to the next view controller title.
-			self.title = nextViewController.title;
+			if (nextViewController.title) self.title = nextViewController.title;
 
 			finished();
 		}];
@@ -214,6 +214,9 @@ typedef enum {
 		if (previousViewController) {
 			[[previousViewController view] removeFromSuperviewWithoutNeedingDisplay];
 		}
+
+		if (nextViewController.title) self.title = nextViewController.title;
+
 		[[self contentBox] addSubview:view];
 		finished();
 	}
