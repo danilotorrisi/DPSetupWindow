@@ -196,6 +196,10 @@ typedef enum {
 		}
 		[[NSAnimationContext currentContext] setCompletionHandler:^{
 			[[previousViewController view] removeFromSuperviewWithoutNeedingDisplay];
+			
+			// Set the window title to the next view controller title.
+			self.title = nextViewController.title;
+
 			finished();
 		}];
 		
