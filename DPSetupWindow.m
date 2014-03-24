@@ -10,14 +10,13 @@
 
 @interface DPSetupWindow ()
 
-@property (retain) NSImageView *imageView;
-@property (retain) NSBox *contentBox;
-@property (retain) NSButton *cancelButton;
-@property (retain) NSButton *backButton;
-@property (retain) NSButton *nextButton;
+@property (nonatomic, strong) NSImageView *imageView;
+@property (nonatomic, strong) NSBox *contentBox;
+@property (nonatomic, strong) NSButton *cancelButton;
+@property (nonatomic, strong) NSButton *backButton;
+@property (nonatomic, strong) NSButton *nextButton;
 
-@property (copy) void(^completionHandler)(BOOL);
-@property (assign) NSViewController *currentViewController;
+@property (nonatomic, copy) void(^completionHandler)(BOOL);
 
 @end
 
@@ -159,7 +158,9 @@ typedef enum {
 	
 	NSInteger nextStage = currentStage + direction;
 	if (nextStage == [[self viewControllers] count]) {
-        	[self deregisterObserversForViewController:previousViewController];
+		// No need to deregister the last view controller, because when the setup window
+		// will be closed, every current view controller will be deregistered ( even if it's the last one ).
+		// [self deregisterObserversForViewController:previousViewController];
 		[self completionHandler](YES);
 		return;
 	}
@@ -234,6 +235,12 @@ typedef enum {
 - (void)cancel:(id)sender {
 	[[NSApplication sharedApplication] endSheet:self returnCode:0];
 	[self completionHandler](NO);
+}
+
+- (void)close {
+    NSViewController<DPSetupWindowStageViewController> *currentViewController = [[self viewControllers] objectAtIndex:currentStage];
+    [self deregisterObserversForViewController:currentViewController];
+    [super close];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {

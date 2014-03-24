@@ -68,10 +68,10 @@
 	NSInteger currentStage;
 }
 
-@property (retain) NSImage *backgroundImage;
-@property (assign) BOOL animates;
-@property (retain) NSArray *viewControllers;
-@property (assign) BOOL funnelsRepresentedObjects;
+@property (nonatomic, strong) NSImage *backgroundImage;
+@property (nonatomic) BOOL animates;
+@property (nonatomic, strong) NSArray *viewControllers;
+@property (nonatomic) BOOL funnelsRepresentedObjects;
 
 - (id)initWithViewControllers:(NSArray *)viewControllers completionHandler:(void (^)(BOOL completed))completionHandler;
 
